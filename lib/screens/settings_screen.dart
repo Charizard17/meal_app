@@ -5,15 +5,29 @@ import '../widget/main_drawer.dart';
 class SettingsScreen extends StatefulWidget {
   static const routeName = '/settings';
 
+  final Function saveSettings;
+  final Map<String, bool> currentSettings;
+
+  SettingsScreen(this.currentSettings, this.saveSettings);
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _glutenFree = false;
-  bool _vegetarian = false;
-  bool _vegan = false;
   bool _lactoseFree = false;
+  bool _vegan = false;
+  bool _vegetarian = false;
+
+  @override
+  initState() {
+    _glutenFree = widget.currentSettings['gluten'];
+    _lactoseFree = widget.currentSettings['lactose'];
+    _vegan = widget.currentSettings['vegan'];
+    _vegetarian = widget.currentSettings['vegetarian'];
+    super.initState();
+  }
 
   Widget _buildSwitchListTile(
     String title,
@@ -34,6 +48,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              final selectedSettings = {
+                'gluten': _glutenFree,
+                'lactose': _lactoseFree,
+                'vegan': _vegan,
+                'vegetarian': _vegetarian,
+              };
+              widget.saveSettings(selectedSettings);
+            },
+          )
+        ],
       ),
       drawer: MainDrawer(),
       body: Column(
