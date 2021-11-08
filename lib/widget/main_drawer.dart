@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../screens/settings_screen.dart';
+
 class MainDrawer extends StatelessWidget {
-  Widget _buildListTile(String title, IconData icon) {
+  Widget _buildListTile(String title, IconData icon, Function tapHandler) {
     return ListTile(
       leading: Icon(
         icon,
@@ -15,7 +17,7 @@ class MainDrawer extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      onTap: () {},
+      onTap: tapHandler,
     );
   }
 
@@ -45,10 +47,16 @@ class MainDrawer extends StatelessWidget {
           _buildListTile(
             'Meals',
             Icons.restaurant,
+            () {
+              Navigator.of(context).pushNamed('/');
+            },
           ),
           _buildListTile(
             'Settings',
             Icons.settings,
+            () {
+              Navigator.of(context).pushNamed(SettingsScreen.routeName);
+            },
           ),
         ],
       ),
